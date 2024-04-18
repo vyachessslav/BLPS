@@ -30,7 +30,7 @@ public class UserService {
         if (user.getLogin() == null || user.getRole() == null || user.getPassword() == null) {
             throw new IllegalArgumentException("Login, nickname, and password are required for registration");
         }
-        if (!(user.getRole().equals("employer") || user.getRole().equals("employee"))) {
+        if (!(user.getRole().equals("employer") || user.getRole().equals("employee") || user.getRole().equals("admin"))) {
             throw new IllegalArgumentException("Invalid role");
         }
         if (user.getLogin().length() > 255) {

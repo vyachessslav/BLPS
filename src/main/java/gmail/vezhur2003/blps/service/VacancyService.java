@@ -9,6 +9,7 @@ import gmail.vezhur2003.blps.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class VacancyService {
@@ -33,6 +34,7 @@ public class VacancyService {
 
         VacancyEntity vacancyEntity = new VacancyEntity();
         vacancyEntity.setName(vacancy.getName());
+        vacancyEntity.setConfirmation(vacancy.getConfirmation());
         vacancyEntity.setSalary(vacancy.getSalary());
         vacancyEntity.setCompany(vacancy.getCompany());
         vacancyEntity.setLocation(vacancy.getLocation());
@@ -62,7 +64,7 @@ public class VacancyService {
             if (vacancy == null) {
                 throw new IllegalArgumentException("There is no vacancy with this id");
             }
-            if (userId != vacancy.getUserId()) {
+            if (!Objects.equals(userId, vacancy.getUserId())) {
                 throw new IllegalArgumentException("Vacancy does not belong to this user");
             }
             vacancyRepository.deleteById(vacancyId);
@@ -72,12 +74,45 @@ public class VacancyService {
     }
 
     public List<VacancyData> searchVacancies() {
-        List<VacancyEntity> vacancyEntities = vacancyRepository.findAll();
+        List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationTrue();
         List<VacancyData> vacancyDataList = new ArrayList<>();
         for (VacancyEntity ie : vacancyEntities) {
             vacancyDataList.add(new VacancyData(ie));
         }
         return vacancyDataList;
     }
-    
+
+    public List<VacancyData> unconfirmedVacancies(Long userId) {
+        if (!userRepository.getById(userId).getRole().equals("admin")) {
+            throw new IllegalArgumentException("User must be admin");
+        }
+        List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationFalse();
+        List<VacancyData> vacancyDataList = new ArrayList<>();
+        for (VacancyEntity ie : vacancyEntities) {
+            vacancyDataList.add(new VacancyData(ie));
+        }
+        return vacancyDataList;
+    }
+
+    public VacancyData confirmVacancy(Long vacancyId, Long userId) {
+        if (!userRepository.getById(userId).getRole().equals("admin")) {
+            throw new IllegalArgumentException("User must be admin");
+        }
+        try {
+            VacancyEntity vacancy = vacancyRepository.findById(vacancyId).orElse(null);
+            if (vacancy == null) {
+                return new VacancyData();
+            }
+
+            if (vacancy.getConfirmation()) {
+                throw new IllegalArgumentException("Vacancy is already confirmed");
+            }
+            vacancy.setConfirmation(true);
+
+            return new VacancyData(vacancyRepository.save(vacancy));
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Internal error while finding vacancy");
+        }
+    }
 }

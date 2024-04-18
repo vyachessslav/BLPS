@@ -30,7 +30,7 @@ public class VacancyController {
         }
     }
 
-    @GetMapping("/allVacancies")
+    @GetMapping("/searching")
     public ResponseEntity<ManyVacanciesContext> searchVacancies() {
         try {
             List<VacancyData> vacancies = vacancyService.searchVacancies();
@@ -40,7 +40,29 @@ public class VacancyController {
         }
     }
 
-    @PostMapping("/create")
+    @GetMapping("/unconfirmed")
+    public ResponseEntity<ManyVacanciesContext> unconfirmedVacancies(@RequestParam Long userId) {
+        try {
+            List<VacancyData> vacancies = vacancyService.unconfirmedVacancies(userId);
+            return ResponseEntity.ok(new ManyVacanciesContext(vacancies));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ManyVacanciesContext(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/confirmation/{id}")
+    public ResponseEntity<VacancyContext> confirmVacancy(@PathVariable Long id, @RequestParam Long userId)   {
+        try {
+            VacancyData confirmedVacancy = vacancyService.confirmVacancy(id, userId);
+            return ResponseEntity.ok(new VacancyContext(confirmedVacancy));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new VacancyContext(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new VacancyContext("Internal error while confirming vacancy"));
+        }
+    }
+
+    @PostMapping("/creating")
     public ResponseEntity<VacancyContext> createVacancy(@RequestBody VacancyData vacancy)   {
         try {
             VacancyData createdVacancy = vacancyService.createVacancy(vacancy);

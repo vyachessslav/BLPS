@@ -25,7 +25,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registration")
     public ResponseEntity<UserLoginContext> register(@RequestBody UserEntity user) {
         try {
             UserLoginContext registeredUser = userService.register(user);

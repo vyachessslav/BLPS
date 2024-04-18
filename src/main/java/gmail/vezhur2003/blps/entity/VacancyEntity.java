@@ -24,6 +24,9 @@ public class VacancyEntity {
     private String name;
 
     @Column(nullable = false)
+    private Boolean confirmation;
+
+    @Column(nullable = false)
     private Long salary;
 
     @Column(nullable = false)

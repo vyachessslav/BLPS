@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface VacancyRepository extends JpaRepository<VacancyEntity, Long> {
     List<VacancyEntity> findAll();
+    List<VacancyEntity> findVacancyEntitiesByConfirmationFalse();
+
+    List<VacancyEntity> findVacancyEntitiesByConfirmationTrue();
 }

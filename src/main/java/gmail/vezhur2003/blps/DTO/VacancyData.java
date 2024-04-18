@@ -14,6 +14,7 @@ public class VacancyData {
 
     private Long id;
     private String name;
+    private Boolean confirmation;
     private Long salary;
     private String location;
     private String company;
@@ -25,6 +26,7 @@ public class VacancyData {
     public VacancyData(VacancyEntity vacancy) {
         this.setId(vacancy.getId());
         this.setName(vacancy.getName());
+        this.setConfirmation(vacancy.getConfirmation());
         this.setSalary(vacancy.getSalary());
         this.setLocation(vacancy.getLocation());
         this.setCompany(vacancy.getCompany());
