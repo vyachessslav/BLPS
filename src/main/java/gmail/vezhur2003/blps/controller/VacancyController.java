@@ -31,9 +31,10 @@ public class VacancyController {
     }
 
     @GetMapping("/searching")
-    public ResponseEntity<ManyVacanciesContext> searchVacancies() {
+    public ResponseEntity<ManyVacanciesContext> searchVacancies(@RequestParam Integer offset,
+                                                                @RequestParam Integer limit) {
         try {
-            List<VacancyData> vacancies = vacancyService.searchVacancies();
+            List<VacancyData> vacancies = vacancyService.searchVacancies(offset, limit);
             return ResponseEntity.ok(new ManyVacanciesContext(vacancies));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ManyVacanciesContext(e.getMessage()));
@@ -41,9 +42,11 @@ public class VacancyController {
     }
 
     @GetMapping("/unconfirmed")
-    public ResponseEntity<ManyVacanciesContext> unconfirmedVacancies(@RequestParam Long userId) {
+    public ResponseEntity<ManyVacanciesContext> unconfirmedVacancies(@RequestParam Long userId,
+                                                                     @RequestParam Integer offset,
+                                                                     @RequestParam Integer limit) {
         try {
-            List<VacancyData> vacancies = vacancyService.unconfirmedVacancies(userId);
+            List<VacancyData> vacancies = vacancyService.unconfirmedVacancies(userId, offset, limit);
             return ResponseEntity.ok(new ManyVacanciesContext(vacancies));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ManyVacanciesContext(e.getMessage()));

@@ -1,11 +1,13 @@
 package gmail.vezhur2003.blps.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import gmail.vezhur2003.blps.DTO.VacancyData;
 import gmail.vezhur2003.blps.entity.VacancyEntity;
 import gmail.vezhur2003.blps.repository.VacancyRepository;
 import gmail.vezhur2003.blps.repository.UserRepository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +75,9 @@ public class VacancyService {
         }
     }
 
-    public List<VacancyData> searchVacancies() {
-        List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationTrue();
+    public List<VacancyData> searchVacancies(Integer offset, Integer limit) {
+        List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationTrue
+                (PageRequest.of(offset, limit));
         List<VacancyData> vacancyDataList = new ArrayList<>();
         for (VacancyEntity ie : vacancyEntities) {
             vacancyDataList.add(new VacancyData(ie));
@@ -82,11 +85,12 @@ public class VacancyService {
         return vacancyDataList;
     }
 
-    public List<VacancyData> unconfirmedVacancies(Long userId) {
+    public List<VacancyData> unconfirmedVacancies(Long userId, Integer offset, Integer limit) {
         if (!userRepository.getById(userId).getRole().equals("admin")) {
             throw new IllegalArgumentException("User must be admin");
         }
-        List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationFalse();
+        List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationFalse(
+                PageRequest.of(offset, limit));
         List<VacancyData> vacancyDataList = new ArrayList<>();
         for (VacancyEntity ie : vacancyEntities) {
             vacancyDataList.add(new VacancyData(ie));
@@ -98,21 +102,22 @@ public class VacancyService {
         if (!userRepository.getById(userId).getRole().equals("admin")) {
             throw new IllegalArgumentException("User must be admin");
         }
+        VacancyEntity vacancy;
         try {
-            VacancyEntity vacancy = vacancyRepository.findById(vacancyId).orElse(null);
-            if (vacancy == null) {
-                return new VacancyData();
-            }
-
-            if (vacancy.getConfirmation()) {
-                throw new IllegalArgumentException("Vacancy is already confirmed");
-            }
-            vacancy.setConfirmation(true);
-
-            return new VacancyData(vacancyRepository.save(vacancy));
-
+            vacancy = vacancyRepository.findById(vacancyId).orElse(null);
         } catch (Exception e) {
             throw new IllegalArgumentException("Internal error while finding vacancy");
         }
+
+        if (vacancy == null) {
+            throw new IllegalArgumentException("No vacancy with this id");
+        }
+
+        if (vacancy.getConfirmation()) {
+            throw new IllegalArgumentException("Vacancy is already confirmed");
+        }
+        vacancy.setConfirmation(true);
+
+        return new VacancyData(vacancyRepository.save(vacancy));
     }
 }
