@@ -1,5 +1,7 @@
 package gmail.vezhur2003.blps.entity;
 
+import gmail.vezhur2003.blps.DTO.RegistrationData;
+import gmail.vezhur2003.blps.security.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +27,11 @@ public class UserEntity {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    private Role role;
+
+    public UserEntity(RegistrationData registrationData, Role role) {
+        login = registrationData.getLogin();
+        password = registrationData.getPassword();
+        this.role = role;
+    }
 }

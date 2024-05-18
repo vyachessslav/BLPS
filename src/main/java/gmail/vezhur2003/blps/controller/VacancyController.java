@@ -11,8 +11,7 @@ import gmail.vezhur2003.blps.service.VacancyService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vacancy")
-@CrossOrigin
+@RequestMapping("${api.endpoints.base-url}/vacancy")
 public class VacancyController {
 
     @Autowired

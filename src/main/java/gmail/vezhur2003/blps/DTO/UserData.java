@@ -1,5 +1,6 @@
 package gmail.vezhur2003.blps.DTO;
 
+import gmail.vezhur2003.blps.security.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import gmail.vezhur2003.blps.entity.UserEntity;
 public class UserData {
     private Long id;
     private String login;
-    private String role;
+    private Role role;
 
     public UserData(UserEntity u) {
         this.setId(u.getId());

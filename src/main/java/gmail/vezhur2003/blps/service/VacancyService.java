@@ -1,5 +1,6 @@
 package gmail.vezhur2003.blps.service;
 
+import gmail.vezhur2003.blps.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import gmail.vezhur2003.blps.DTO.VacancyData;
 import gmail.vezhur2003.blps.entity.VacancyEntity;
 import gmail.vezhur2003.blps.repository.VacancyRepository;
 import gmail.vezhur2003.blps.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Transactional
 public class VacancyService {
 
     @Autowired
@@ -24,7 +27,7 @@ public class VacancyService {
 
     public VacancyData createVacancy(VacancyData vacancy) {
 
-        if (!userRepository.getById(vacancy.getUserId()).getRole().equals("employer")) {
+        if (!userRepository.getById(vacancy.getUserId()).getRole().equals(Role.EMPLOYER)) {
             throw new IllegalArgumentException("User must be employer");
         }
         if (vacancy.getName() == null || vacancy.getName().isEmpty()) {
@@ -86,7 +89,7 @@ public class VacancyService {
     }
 
     public List<VacancyData> unconfirmedVacancies(Long userId, Integer offset, Integer limit) {
-        if (!userRepository.getById(userId).getRole().equals("admin")) {
+        if (!userRepository.getById(userId).getRole().equals(Role.ADMIN)) {
             throw new IllegalArgumentException("User must be admin");
         }
         List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationFalse(
@@ -99,7 +102,7 @@ public class VacancyService {
     }
 
     public VacancyData confirmVacancy(Long vacancyId, Long userId) {
-        if (!userRepository.getById(userId).getRole().equals("admin")) {
+        if (!userRepository.getById(userId).getRole().equals(Role.ADMIN)) {
             throw new IllegalArgumentException("User must be admin");
         }
         VacancyEntity vacancy;
