@@ -1,11 +1,14 @@
 package gmail.vezhur2003.blps.config;
 
 import gmail.vezhur2003.blps.service.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.jaas.AbstractJaasAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,41 +22,27 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-    private final UserDetailsServiceImpl userDetailsService;
+    private final AbstractJaasAuthenticationProvider jaasAuthenticationProvider;
 
     @Value(value = "${api.endpoints.base-url}")
     private String baseUrl;
 
-    public SecurityConfiguration(UserDetailsServiceImpl userDetailService) {
-        this.userDetailsService = userDetailService;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return userDetailsService;
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        return httpSecurity
+                .authenticationProvider(jaasAuthenticationProvider)
+                .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers(baseUrl + "/employees").permitAll();
-                    registry.requestMatchers(baseUrl + "/employers").permitAll();
-                    registry.requestMatchers(baseUrl + "/admins").permitAll();
-
-                    registry.anyRequest().authenticated();
-                })
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(baseUrl + "/vacancy/unconfirmed").hasAuthority("ADMIN")
+                        .requestMatchers(baseUrl + "/vacancy/confirmation").hasAuthority("ADMIN")
+                        .requestMatchers(baseUrl + "/vacancy/creating").hasAuthority("EMPLOYER")
+                        .requestMatchers(HttpMethod.DELETE,baseUrl + "/vacancy/*").hasAuthority("EMPLOYER")
+                        .anyRequest().permitAll()
+                )
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
