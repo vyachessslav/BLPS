@@ -1,10 +1,11 @@
-package gmail.vezhur2003.blps.entity;
+package gmail.vezhur2003.blps.secondary;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.time.LocalDateTime;
 

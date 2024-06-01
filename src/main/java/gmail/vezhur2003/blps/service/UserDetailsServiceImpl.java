@@ -1,15 +1,17 @@
 package gmail.vezhur2003.blps.service;
 
-import gmail.vezhur2003.blps.entity.UserEntity;
-import gmail.vezhur2003.blps.repository.UserRepository;
+import gmail.vezhur2003.blps.primary.UserEntity;
+import gmail.vezhur2003.blps.primary.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional("primaryTransactionManager")
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;

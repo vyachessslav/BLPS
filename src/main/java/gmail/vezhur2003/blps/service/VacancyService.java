@@ -5,18 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import gmail.vezhur2003.blps.DTO.VacancyData;
-import gmail.vezhur2003.blps.entity.VacancyEntity;
-import gmail.vezhur2003.blps.repository.VacancyRepository;
-import gmail.vezhur2003.blps.repository.UserRepository;
+import gmail.vezhur2003.blps.secondary.VacancyEntity;
+import gmail.vezhur2003.blps.secondary.VacancyRepository;
+import gmail.vezhur2003.blps.primary.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Service
-@Transactional
+@Transactional("secondaryTransactionManager")
 public class VacancyService {
 
     @Autowired

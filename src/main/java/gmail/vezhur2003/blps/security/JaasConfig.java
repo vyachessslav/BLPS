@@ -1,6 +1,6 @@
 package gmail.vezhur2003.blps.security;
 
-import gmail.vezhur2003.blps.repository.UserRepository;
+import gmail.vezhur2003.blps.primary.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

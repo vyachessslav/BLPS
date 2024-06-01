@@ -1,8 +1,9 @@
-package gmail.vezhur2003.blps.repository;
+package gmail.vezhur2003.blps.primary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import gmail.vezhur2003.blps.entity.UserEntity;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity getById(Long id);

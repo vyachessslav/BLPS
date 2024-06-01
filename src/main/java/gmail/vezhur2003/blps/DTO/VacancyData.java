@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import gmail.vezhur2003.blps.entity.VacancyEntity;
+import gmail.vezhur2003.blps.secondary.VacancyEntity;
 
 @Getter
 @Setter

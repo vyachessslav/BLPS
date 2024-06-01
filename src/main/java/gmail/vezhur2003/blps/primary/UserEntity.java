@@ -1,17 +1,14 @@
-package gmail.vezhur2003.blps.entity;
+package gmail.vezhur2003.blps.primary;
 
 import gmail.vezhur2003.blps.DTO.RegistrationData;
 import gmail.vezhur2003.blps.security.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Entity
 @Table(name = "account")
-@Getter
-@Setter
+@Data
 @ToString
 @RequiredArgsConstructor
 public class UserEntity {

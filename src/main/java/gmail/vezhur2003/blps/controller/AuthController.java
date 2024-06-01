@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import gmail.vezhur2003.blps.DTO.UserLoginContext;
-import gmail.vezhur2003.blps.entity.UserEntity;
 import gmail.vezhur2003.blps.service.UserService;
 
 @RestController

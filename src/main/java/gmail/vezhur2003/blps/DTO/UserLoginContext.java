@@ -3,7 +3,7 @@ package gmail.vezhur2003.blps.DTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import gmail.vezhur2003.blps.entity.UserEntity;
+import gmail.vezhur2003.blps.primary.UserEntity;
 
 @Getter
 @Setter

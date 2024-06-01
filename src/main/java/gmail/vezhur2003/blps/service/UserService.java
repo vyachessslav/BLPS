@@ -5,12 +5,12 @@ import gmail.vezhur2003.blps.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import gmail.vezhur2003.blps.DTO.UserLoginContext;
-import gmail.vezhur2003.blps.entity.UserEntity;
-import gmail.vezhur2003.blps.repository.UserRepository;
+import gmail.vezhur2003.blps.primary.UserEntity;
+import gmail.vezhur2003.blps.primary.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional("primaryTransactionManager")
 public class UserService {
 
     @Autowired
