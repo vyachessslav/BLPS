@@ -4,7 +4,6 @@ import gmail.vezhur2003.blps.DTO.RegistrationData;
 import gmail.vezhur2003.blps.security.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 @Entity
 @Table(name = "account")

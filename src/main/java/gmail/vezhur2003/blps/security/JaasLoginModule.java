@@ -19,20 +19,14 @@ public class JaasLoginModule implements LoginModule {
 
     private Subject subject;
     private CallbackHandler callbackHandler;
-    private Map<String, ?> sharedState;
-    private Map<String, ?> options;
     private String login;
     private boolean loginSucceeded = false;
-    private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
 
     @Override
     public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
         this.subject = subject;
         this.callbackHandler = callbackHandler;
-        this.sharedState = sharedState;
-        this.options = options;
-        this.passwordEncoder = new BCryptPasswordEncoder();
         this.userRepository = (UserRepository) options.get("userRepository");
     }
 
