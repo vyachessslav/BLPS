@@ -38,6 +38,7 @@ public class VacancyService {
 
         VacancyEntity vacancyEntity = new VacancyEntity();
         vacancyEntity.setName(vacancy.getName());
+        vacancyEntity.setTopic(vacancy.getTopic());
         vacancyEntity.setConfirmation(vacancy.getConfirmation());
         vacancyEntity.setSalary(vacancy.getSalary());
         vacancyEntity.setCompany(vacancy.getCompany());
@@ -80,6 +81,16 @@ public class VacancyService {
     public List<VacancyData> searchVacancies(Integer offset, Integer limit) {
         List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationTrue
                 (PageRequest.of(offset, limit));
+        List<VacancyData> vacancyDataList = new ArrayList<>();
+        for (VacancyEntity ie : vacancyEntities) {
+            vacancyDataList.add(new VacancyData(ie));
+        }
+        return vacancyDataList;
+    }
+
+    public List<VacancyData> searchFilteredVacancies(Integer offset, Integer limit, List<String> filters) {
+        List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationTrueAndTopicIn
+                (PageRequest.of(offset, limit), filters);
         List<VacancyData> vacancyDataList = new ArrayList<>();
         for (VacancyEntity ie : vacancyEntities) {
             vacancyDataList.add(new VacancyData(ie));

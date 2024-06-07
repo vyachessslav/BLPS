@@ -11,4 +11,6 @@ public interface VacancyRepository extends JpaRepository<VacancyEntity, Long> {
     List<VacancyEntity> findVacancyEntitiesByConfirmationFalse(PageRequest pageRequest);
 
     List<VacancyEntity> findVacancyEntitiesByConfirmationTrue(PageRequest pageRequest);
+
+    List<VacancyEntity> findVacancyEntitiesByConfirmationTrueAndTopicIn(PageRequest pageRequest, List<String> topic);
 }

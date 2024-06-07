@@ -41,6 +41,18 @@ public class VacancyController {
         }
     }
 
+    @GetMapping("/searching/filtered")
+    public ResponseEntity<ManyVacanciesContext> searchVacancies(@RequestParam Integer offset,
+                                                                @RequestParam Integer limit,
+                                                                @RequestBody List<String> filters) {
+        try {
+            List<VacancyData> vacancies = vacancyService.searchFilteredVacancies(offset, limit, filters);
+            return ResponseEntity.ok(new ManyVacanciesContext(vacancies));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ManyVacanciesContext(e.getMessage()));
+        }
+    }
+
     @GetMapping("/unconfirmed")
     public ResponseEntity<ManyVacanciesContext> unconfirmedVacancies(@RequestParam Long userId,
                                                                      @RequestParam Integer offset,

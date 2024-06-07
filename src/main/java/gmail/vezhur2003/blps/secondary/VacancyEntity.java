@@ -18,6 +18,9 @@ public class VacancyEntity {
     @Column(name = "id")
     private Long id;
 
+    @Column(nullable = false)
+    private String topic;
+
     @Column(nullable = false, unique = true)
     private String name;
 

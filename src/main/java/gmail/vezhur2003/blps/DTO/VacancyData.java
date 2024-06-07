@@ -13,6 +13,7 @@ import gmail.vezhur2003.blps.secondary.VacancyEntity;
 public class VacancyData {
 
     private Long id;
+    private String topic;
     private String name;
     private Boolean confirmation;
     private Long salary;
@@ -25,6 +26,7 @@ public class VacancyData {
 
     public VacancyData(VacancyEntity vacancy) {
         this.setId(vacancy.getId());
+        this.setTopic((vacancy.getTopic()));
         this.setName(vacancy.getName());
         this.setConfirmation(vacancy.getConfirmation());
         this.setSalary(vacancy.getSalary());
