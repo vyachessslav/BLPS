@@ -1,7 +1,7 @@
 package gmail.vezhur2003.blps.config;
 
-import gmail.vezhur2003.blps.DTO.UserData;
-import gmail.vezhur2003.blps.DTO.VacancyData;
+import gmail.vezhur2003.blps.primary.UserEntity;
+import gmail.vezhur2003.blps.secondary.VacancyEntity;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -47,22 +47,22 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<Long, VacancyData> vacancyProducerFactory() {
+    public ProducerFactory<Long, VacancyEntity> vacancyProducerFactory() {
         return new DefaultKafkaProducerFactory<>(vacancyProducerConfigs());
     }
 
     @Bean
-    public ProducerFactory<String, UserData> userProducerFactory() {
+    public ProducerFactory<String, UserEntity> userProducerFactory() {
         return new DefaultKafkaProducerFactory<>(userProducerConfigs());
     }
 
     @Bean(name = "vacancy-kafka-template")
-    public KafkaTemplate<Long, VacancyData> issueKafkaTemplate() {
+    public KafkaTemplate<Long, VacancyEntity> vacancyKafkaTemplate() {
         return new KafkaTemplate<>(vacancyProducerFactory());
     }
 
     @Bean(name = "user-kafka-template")
-    public KafkaTemplate<String, UserData> userKafkaTemplate() {
+    public KafkaTemplate<String, UserEntity> userKafkaTemplate() {
         return new KafkaTemplate<>(userProducerFactory());
     }
 }

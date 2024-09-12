@@ -1,7 +1,6 @@
 package gmail.vezhur2003.blps.service;
 
 import gmail.vezhur2003.blps.DTO.RegistrationData;
-import gmail.vezhur2003.blps.DTO.UserData;
 import gmail.vezhur2003.blps.DTO.UserLoginContext;
 import gmail.vezhur2003.blps.primary.UserEntity;
 import gmail.vezhur2003.blps.primary.UserRepository;
@@ -22,15 +21,19 @@ public class UserService {
 
     public UserLoginContext registerEmployee(RegistrationData registrationData) {
         UserEntity userEntity = userRepository.save(new UserEntity(registrationData, Role.EMPLOYEE));
-        kafkaProducerService.sendUser(userEntity.getLogin(), new UserData(userEntity));
+        kafkaProducerService.sendUser(userEntity.getLogin(), userEntity);
         return new UserLoginContext(userEntity);
     }
 
     public UserLoginContext registerEmployer(RegistrationData registrationData) {
+        UserEntity userEntity = userRepository.save(new UserEntity(registrationData, Role.EMPLOYER));
+        kafkaProducerService.sendUser(userEntity.getLogin(), userEntity);
         return new UserLoginContext(userRepository.save(new UserEntity(registrationData, Role.EMPLOYER)));
     }
 
     public UserLoginContext registerAdmin(RegistrationData registrationData) {
+        UserEntity userEntity = userRepository.save(new UserEntity(registrationData, Role.ADMIN));
+        kafkaProducerService.sendUser(userEntity.getLogin(), userEntity);
         return new UserLoginContext(userRepository.save(new UserEntity(registrationData, Role.ADMIN)));
     }
 }

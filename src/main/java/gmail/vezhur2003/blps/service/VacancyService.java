@@ -51,7 +51,7 @@ public class VacancyService {
         vacancyEntity.setLongDescription(vacancy.getLongDescription());
         vacancyEntity.setUserId(vacancy.getUserId());
 
-        kafkaProducerService.sendVacancy(vacancy);
+        kafkaProducerService.sendVacancy(vacancyEntity);
 
         return new VacancyData(vacancyRepository.save(vacancyEntity));
     }
