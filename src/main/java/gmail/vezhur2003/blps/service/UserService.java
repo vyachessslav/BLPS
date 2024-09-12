@@ -28,12 +28,12 @@ public class UserService {
     public UserLoginContext registerEmployer(RegistrationData registrationData) {
         UserEntity userEntity = userRepository.save(new UserEntity(registrationData, Role.EMPLOYER));
         kafkaProducerService.sendUser(userEntity.getLogin(), userEntity);
-        return new UserLoginContext(userRepository.save(new UserEntity(registrationData, Role.EMPLOYER)));
+        return new UserLoginContext(userEntity);
     }
 
     public UserLoginContext registerAdmin(RegistrationData registrationData) {
         UserEntity userEntity = userRepository.save(new UserEntity(registrationData, Role.ADMIN));
         kafkaProducerService.sendUser(userEntity.getLogin(), userEntity);
-        return new UserLoginContext(userRepository.save(new UserEntity(registrationData, Role.ADMIN)));
+        return new UserLoginContext(userEntity);
     }
 }
