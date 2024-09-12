@@ -1,13 +1,13 @@
 package gmail.vezhur2003.blps.service;
 
+import gmail.vezhur2003.blps.DTO.VacancyData;
+import gmail.vezhur2003.blps.primary.UserRepository;
+import gmail.vezhur2003.blps.secondary.VacancyEntity;
+import gmail.vezhur2003.blps.secondary.VacancyRepository;
 import gmail.vezhur2003.blps.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import gmail.vezhur2003.blps.DTO.VacancyData;
-import gmail.vezhur2003.blps.secondary.VacancyEntity;
-import gmail.vezhur2003.blps.secondary.VacancyRepository;
-import gmail.vezhur2003.blps.primary.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -23,6 +23,9 @@ public class VacancyService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private KafkaProducerService kafkaProducerService;
 
     public VacancyData createVacancy(VacancyData vacancy) {
 
@@ -47,6 +50,8 @@ public class VacancyService {
         vacancyEntity.setShortDescription(vacancy.getShortDescription());
         vacancyEntity.setLongDescription(vacancy.getLongDescription());
         vacancyEntity.setUserId(vacancy.getUserId());
+
+        kafkaProducerService.sendVacancy(vacancy);
 
         return new VacancyData(vacancyRepository.save(vacancyEntity));
     }
