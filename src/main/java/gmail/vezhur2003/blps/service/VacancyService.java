@@ -51,8 +51,6 @@ public class VacancyService {
         vacancyEntity.setLongDescription(vacancy.getLongDescription());
         vacancyEntity.setUserId(vacancy.getUserId());
 
-        kafkaProducerService.sendVacancy(vacancyEntity);
-
         return new VacancyData(vacancyRepository.save(vacancyEntity));
     }
 
@@ -135,6 +133,8 @@ public class VacancyService {
             throw new IllegalArgumentException("Vacancy is already confirmed");
         }
         vacancy.setConfirmation(true);
+
+        kafkaProducerService.sendVacancy(vacancy);
 
         return new VacancyData(vacancyRepository.save(vacancy));
     }
