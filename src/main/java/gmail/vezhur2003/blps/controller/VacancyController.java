@@ -54,11 +54,10 @@ public class VacancyController {
     }
 
     @GetMapping("/unconfirmed")
-    public ResponseEntity<ManyVacanciesContext> unconfirmedVacancies(@RequestParam Long userId,
-                                                                     @RequestParam Integer offset,
+    public ResponseEntity<ManyVacanciesContext> unconfirmedVacancies(@RequestParam Integer offset,
                                                                      @RequestParam Integer limit) {
         try {
-            List<VacancyData> vacancies = vacancyService.unconfirmedVacancies(userId, offset, limit);
+            List<VacancyData> vacancies = vacancyService.unconfirmedVacancies(offset, limit);
             return ResponseEntity.ok(new ManyVacanciesContext(vacancies));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ManyVacanciesContext(e.getMessage()));
@@ -66,9 +65,9 @@ public class VacancyController {
     }
 
     @PostMapping("/confirmation/{id}")
-    public ResponseEntity<VacancyContext> confirmVacancy(@PathVariable Long id, @RequestParam Long userId)   {
+    public ResponseEntity<VacancyContext> confirmVacancy(@PathVariable Long id)   {
         try {
-            VacancyData confirmedVacancy = vacancyService.confirmVacancy(id, userId);
+            VacancyData confirmedVacancy = vacancyService.confirmVacancy(id);
             return ResponseEntity.ok(new VacancyContext(confirmedVacancy));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new VacancyContext(e.getMessage()));

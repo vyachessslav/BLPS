@@ -101,10 +101,7 @@ public class VacancyService {
         return vacancyDataList;
     }
 
-    public List<VacancyData> unconfirmedVacancies(Long userId, Integer offset, Integer limit) {
-        if (!userRepository.getById(userId).getRole().equals(Role.ADMIN)) {
-            throw new IllegalArgumentException("User must be admin");
-        }
+    public List<VacancyData> unconfirmedVacancies(Integer offset, Integer limit) {
         List<VacancyEntity> vacancyEntities = vacancyRepository.findVacancyEntitiesByConfirmationFalse(
                 PageRequest.of(offset, limit));
         List<VacancyData> vacancyDataList = new ArrayList<>();
@@ -114,10 +111,7 @@ public class VacancyService {
         return vacancyDataList;
     }
 
-    public VacancyData confirmVacancy(Long vacancyId, Long userId) {
-        if (!userRepository.getById(userId).getRole().equals(Role.ADMIN)) {
-            throw new IllegalArgumentException("User must be admin");
-        }
+    public VacancyData confirmVacancy(Long vacancyId) {
         VacancyEntity vacancy;
         try {
             vacancy = vacancyRepository.findById(vacancyId).orElse(null);
